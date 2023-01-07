@@ -8,13 +8,18 @@ import com.atomize.repository.DosRepository;
 import com.atomize.services.DOSService;
 import com.atomize.services.EmailService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 // dos service implementation
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class DosServiceImpl implements DOSService {
     private final DosRepository repository;
     private final PasswordEncoder passwordEncoder;
@@ -49,5 +54,22 @@ public class DosServiceImpl implements DOSService {
 
         emailServive.sendEmailToDos(signUpRequest.email(), subject, text);
         return repository.save(dos);
+    }
+
+    @Override
+    public List<Dos> getAllDos() {
+        List<Dos> dos = repository.findAll();
+        if (dos.size() < 1) throw new ApiRequestException(" dos is empty", HttpStatus.NO_CONTENT);
+        return dos;
+    }
+
+    @Override
+    public Dos deleteDos(String dosEmail) {
+        Dos dos = repository.findByEmail(dosEmail).orElseThrow(() -> {
+            throw new ApiRequestException("email not found", HttpStatus.NOT_FOUND);
+        });
+        repository.deleteByEmail(dosEmail);
+//         send email when they delete  account
+        return dos;
     }
 }
