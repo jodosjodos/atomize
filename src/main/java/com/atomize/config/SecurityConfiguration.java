@@ -27,12 +27,15 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(request ->
-                request.
-                        requestMatchers("/api/dos/**").permitAll()
-                .requestMatchers("/api/teacher/login").permitAll()
-                .anyRequest().authenticated()
+                        request.
+                                requestMatchers("/api/dos/create").permitAll().
+                                requestMatchers("/api/dos/login").permitAll()
+                                .requestMatchers("/api/teacher/login").permitAll()
+                                .anyRequest().authenticated()
 
-        ).sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).authenticationProvider(authenticationProvider()).addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
+                ).sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
+                .authenticationProvider(authenticationProvider());
         return http.build();
     }
 

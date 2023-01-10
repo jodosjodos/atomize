@@ -1,20 +1,24 @@
 package com.atomize.Controller;
 
+import com.atomize.dtos.TeacherSignUpDto;
+import com.atomize.services.TeacherService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/teacher")
+@RequiredArgsConstructor
 public class TeacherController {
 
+    private  final TeacherService service;
+    @PostMapping("/create")
+    public ResponseEntity<?> create(@RequestBody TeacherSignUpDto signUpDto) {
+        return ResponseEntity.ok().body(service.createTeacher(signUpDto));
+    }
     @GetMapping("/login")
     public ResponseEntity<?> test() {
         return ResponseEntity.ok().body("reaching out");
     }
-    @GetMapping("/create")
-    public ResponseEntity<?> create() {
-        return ResponseEntity.ok().body("reaching out create");
-    }
+
 }

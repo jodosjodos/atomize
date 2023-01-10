@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,8 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String jwt;
         final String userEmail;
         if (authHeader == null || authHeader.trim().isEmpty() || !authHeader.startsWith("Bearer")) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//           filterChain.doFilter(request,response);
+            filterChain.doFilter(request, response);
             return;
         }
         try {
