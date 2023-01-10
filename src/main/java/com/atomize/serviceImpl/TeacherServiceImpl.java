@@ -62,7 +62,10 @@ public class TeacherServiceImpl implements TeacherService {
 //        emailService.sendEmailToDos(signUpDto.email(), subject, text);
 //        return repository.save(teacher);
 //        not saving
+<<<<<<< HEAD
 //        return draft
+=======
+>>>>>>> 402fc4440e6421eeecb9f9c44e11b4eb1a2b3a1a
         return teacher;
     }
 
