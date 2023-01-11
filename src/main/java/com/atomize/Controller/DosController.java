@@ -1,17 +1,18 @@
 package com.atomize.Controller;
 
-import com.atomize.dto.LoginResponse;
 import com.atomize.dto.SignInRequest;
 import com.atomize.dto.SignUpRequest;
 import com.atomize.entity.Dos;
 import com.atomize.services.DOSService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -42,7 +43,7 @@ public class DosController {
 
     // login
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse<Dos>> loginDos(@RequestBody SignInRequest signInRequest) {
+    public ResponseEntity<?> loginDos(@RequestBody SignInRequest signInRequest) {
         return ResponseEntity.ok().body(service.loginDos(signInRequest));
     }
 
