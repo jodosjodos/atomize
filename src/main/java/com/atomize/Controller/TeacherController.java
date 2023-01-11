@@ -34,6 +34,7 @@ public class TeacherController {
 
     }
 
+    // login teacher
     @PostMapping("/login")
     public ResponseEntity<LoginResponse<Teacher>> login(@RequestBody @Valid TeacherLoginDto loginDto,
             BindingResult bindingResult) {
