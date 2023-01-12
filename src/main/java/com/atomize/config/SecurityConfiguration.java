@@ -51,7 +51,7 @@ public class SecurityConfiguration {
         return new BCryptPasswordEncoder();
     }
 
-    // problem with this authenticated provider
+    // problem with this authentication provider
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration conf) throws Exception {
         return conf.getAuthenticationManager();
