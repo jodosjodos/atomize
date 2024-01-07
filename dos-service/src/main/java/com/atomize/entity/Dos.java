@@ -1,6 +1,7 @@
 package com.atomize.entity;
 
 import com.atomize.dtos.Role;
+import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,18 +11,21 @@ import java.util.Collection;
 import java.util.List;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @RequiredArgsConstructor
 @Builder
+@Table(name = "Dos")
 public class Dos implements UserDetails {
-    private Long id;
-    private String name;
-    private String phoneNumber;
-    private String email;
-    private String schoolName;
-    private String password;
-    private Role role;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private final Long id;
+    private final String name;
+    private final String phoneNumber;
+    @Column(nullable = false,unique = true,updatable = false)
+    private final String email;
+    @Column(nullable = false,unique = true,updatable = false)
+    private final String schoolName;
+    private final String password;
+    private final Role role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
