@@ -1,5 +1,6 @@
 package com.atomize.serviceImpl;
 
+import com.atomize.dtos.Role;
 import com.atomize.dtos.SignUpRequest;
 import com.atomize.entity.Dos;
 import com.atomize.errors.ApiException.exception.ApiRequestException;
@@ -26,9 +27,10 @@ public class DosServiceImpl implements DOSService {
                 .email(signUpRequest.email())
                 .schoolName(signUpRequest.schoolName())
                 .password(passwordEncoder.encode(signUpRequest.password()))
+                .role(Role.ADMIN)
                 .build();
 
-        boolean dosAlreadyExists = repository.finByEmail(dos.getEmail()).isPresent();
+        boolean dosAlreadyExists = repository.findByEmail(dos.getEmail()).isPresent();
         if (dosAlreadyExists) {
             throw new ApiRequestException(" email already exists", HttpStatus.BAD_REQUEST);
         }

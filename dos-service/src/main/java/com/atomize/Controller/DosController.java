@@ -9,10 +9,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/dos")
@@ -21,6 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class DosController {
     private final DOSService service;
 
+    @GetMapping("/testing")
+    public  ResponseEntity<?> testApi(){
+        return  ResponseEntity.ok().body("testing ");
+    }
     @PostMapping("/create")
     public ResponseEntity<Dos> createDos(@Valid @RequestBody SignUpRequest signUpRequest) {
         return ResponseEntity.ok().body(service.createDos(signUpRequest));

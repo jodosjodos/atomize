@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface DosRepository extends JpaRepository< Dos,Long> {
-    Optional<Dos> finByEmail(String email);
+    Optional<Dos> findByEmail(String email);
 }

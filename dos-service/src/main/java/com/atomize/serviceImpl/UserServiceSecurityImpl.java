@@ -18,7 +18,7 @@ public class UserServiceSecurityImpl implements UserServiceSecurity {
     // get user by username(email)
     @Override
     public UserDetailsService userDetailsService() {
-        return username -> repository.finByEmail(username).orElseThrow(() -> new ApiRequestException("user doesn't exists", HttpStatus.NOT_FOUND));
+        return username -> repository.findByEmail(username).orElseThrow(() -> new ApiRequestException("user doesn't exists", HttpStatus.NOT_FOUND));
     }
 
 

@@ -18,9 +18,8 @@ import org.springframework.stereotype.Service;
 public class EmailServiceImpl implements EmailServive {
 
     private final JavaMailSender mailSender;
-    @Autowired
     @Value("${spring.mail.username}")
-    private final String from;
+    private  String from;
 
     @Override
     public void sendEmailToDos(String to, String subject, String body) {
