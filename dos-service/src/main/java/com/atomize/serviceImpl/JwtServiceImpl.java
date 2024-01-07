@@ -2,6 +2,7 @@ package com.atomize.serviceImpl;
 
 import com.atomize.errors.ApiException.exception.ApiRequestException;
 import com.atomize.services.JwtService;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
 import java.security.Key;
-import java.security.SignatureException;
+import java.util.Date;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -27,7 +28,12 @@ public class JwtServiceImpl implements JwtService {
 
     @Override
     public String generateToken(UserDetails userDetails) {
-        return null;
+        return Jwts.builder()
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 3))
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .compact();
     }
 
     @Override
@@ -36,8 +42,14 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public String generateRefreshToken(Map<String, Object> extractclaims, UserDetails userDetails) {
-        return null;
+    public String generateRefreshToken(Map<String, Object> extractClaims, UserDetails userDetails) {
+        return Jwts.builder()
+                .setClaims(extractClaims)
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 604800000))
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .compact();
     }
 
 
@@ -56,7 +68,7 @@ public class JwtServiceImpl implements JwtService {
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
-        }catch (JwtException e){
+        } catch (JwtException e) {
             throw new ApiRequestException("token parsing failed  " + e.getMessage(), HttpStatus.UNAUTHORIZED);
 
         }
