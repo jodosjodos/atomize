@@ -1,0 +1,40 @@
+package com.atomize.serviceImpl;
+
+import ch.qos.logback.core.encoder.EchoEncoder;
+import com.atomize.errors.ApiException.exception.ApiRequestException;
+import com.atomize.services.EmailServive;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.stereotype.Service;
+
+@Service
+@Slf4j
+@RequiredArgsConstructor
+public class EmailServiceImpl implements EmailServive {
+
+    private final JavaMailSender mailSender;
+    @Autowired
+    @Value("${spring.mail.username}")
+    private final String from;
+
+    @Override
+    public void sendEmailToDos(String to, String subject, String body) {
+        try {
+            SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+            simpleMailMessage.setFrom(from);
+            simpleMailMessage.setTo(to);
+            simpleMailMessage.setSubject(subject);
+            simpleMailMessage.setText(body);
+            mailSender.send(simpleMailMessage);
+            log.info(" email is sent successfully");
+
+        } catch (Exception e) {
+            throw new ApiRequestException(" email failed to be sent , please try again", e.getCause(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+}

@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface DosRepository extends JpaRepository<Long, Dos> {
+public interface DosRepository extends JpaRepository< Dos,Long> {
     Optional<Dos> finByEmail(String email);
 }

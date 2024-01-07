@@ -2,6 +2,10 @@ package com.atomize.entity;
 
 import com.atomize.dtos.Role;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,18 +17,27 @@ import java.util.List;
 @Data
 @RequiredArgsConstructor
 @Builder
+@Entity
 @Table(name = "Dos")
 public class Dos implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private final Long id;
+    @Column(nullable = false)
     private final String name;
+    @Pattern(regexp = "\\+\\d{12}", message = "Invalid phone number")
     private final String phoneNumber;
-    @Column(nullable = false,unique = true,updatable = false)
+    @Column(nullable = false, unique = true, updatable = false)
+    @Email
+    @Pattern(regexp=".+@.+\\..+")
     private final String email;
-    @Column(nullable = false,unique = true,updatable = false)
+    @Column(nullable = false, unique = true, updatable = false)
     private final String schoolName;
+    @Column(nullable = false)
+    @Size(min = 4)
+
     private final String password;
+
     private final Role role;
 
     @Override
