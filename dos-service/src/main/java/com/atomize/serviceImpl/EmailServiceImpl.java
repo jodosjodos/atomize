@@ -1,11 +1,9 @@
 package com.atomize.serviceImpl;
 
-import ch.qos.logback.core.encoder.EchoEncoder;
 import com.atomize.errors.ApiException.exception.ApiRequestException;
-import com.atomize.services.EmailServive;
+import com.atomize.services.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.SimpleMailMessage;
@@ -15,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class EmailServiceImpl implements EmailServive {
+public class EmailServiceImpl implements EmailService {
 
     private final JavaMailSender mailSender;
     @Value("${spring.mail.username}")

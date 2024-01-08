@@ -6,7 +6,7 @@ import com.atomize.entity.Dos;
 import com.atomize.errors.ApiException.exception.ApiRequestException;
 import com.atomize.repository.DosRepository;
 import com.atomize.services.DOSService;
-import com.atomize.services.EmailServive;
+import com.atomize.services.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 public class DosServiceImpl implements DOSService {
     private final DosRepository repository;
     private final PasswordEncoder passwordEncoder;
-    private final EmailServive emailServive;
+    private final EmailService emailServive;
 
     @Override
     public Dos createDos(SignUpRequest signUpRequest) {

@@ -1,5 +1,5 @@
 package com.atomize.services;
 
-public interface EmailServive {
+public interface EmailService {
 void   sendEmailToDos(String to ,String subject , String body);
 }
