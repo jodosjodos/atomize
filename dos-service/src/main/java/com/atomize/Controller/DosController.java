@@ -18,10 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class DosController {
     private final DOSService service;
 
-    @GetMapping("/testing")
-    public  ResponseEntity<?> testApi(){
-        return  ResponseEntity.ok().body("testing ");
-    }
+    //create dos
     @PostMapping("/create")
     public ResponseEntity<Dos> createDos(@Valid @RequestBody SignUpRequest signUpRequest) {
         return ResponseEntity.ok().body(service.createDos(signUpRequest));
