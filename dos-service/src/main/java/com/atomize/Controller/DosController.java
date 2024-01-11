@@ -27,5 +27,10 @@ public class DosController {
         return ResponseEntity.ok().body(service.createDos(signUpRequest));
     }
 
+//    not done yet
+    @GetMapping("/all")
+    public  ResponseEntity<?> getAllDos(){
+        return  null;
+    }
 
 }
