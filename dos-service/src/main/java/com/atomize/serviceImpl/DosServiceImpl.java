@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+// dos service implementation
 @Service
 @RequiredArgsConstructor
 public class DosServiceImpl implements DOSService {
