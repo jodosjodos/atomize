@@ -9,34 +9,36 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
 import java.util.Collection;
 import java.util.List;
 
 @Table(name = "Dos")
 @Entity
 @Data
-@RequiredArgsConstructor
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Dos implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private final Long id;
+    private Long id;
     @Column(nullable = false)
-    private final String name;
+    private String name;
     @Pattern(regexp = "\\+\\d{12}", message = "Invalid phone number")
-    private final String phoneNumber;
+    private String phoneNumber;
     @Column(nullable = false, unique = true, updatable = false)
     @Email
     @Pattern(regexp = ".+@.+\\..+")
-    private final String email;
+    private String email;
     @Column(nullable = false, unique = true, updatable = false)
-    private final String schoolName;
+    private String schoolName;
     @Column(nullable = false)
     @Size(min = 4)
 
-    private final String password;
+    private String password;
 
-    private final Role role;
+    private Role role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
