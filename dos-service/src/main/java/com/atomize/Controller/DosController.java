@@ -1,6 +1,7 @@
 package com.atomize.Controller;
 
 
+import com.atomize.dtos.SignInRequest;
 import com.atomize.dtos.SignUpRequest;
 import com.atomize.entity.Dos;
 import com.atomize.services.DOSService;
@@ -35,4 +36,12 @@ public class DosController {
     public  ResponseEntity<?> deleteDos(@RequestParam("email") String dosEmail){
         return  ResponseEntity.ok().body(service.deleteDos(dosEmail));
     }
+
+//    login
+    @PostMapping("/login")
+    public  ResponseEntity<?> loginDos(@RequestBody SignInRequest signInRequest){
+        return  ResponseEntity.ok().body(service.loginDos(signInRequest));
+    }
+
+
 }

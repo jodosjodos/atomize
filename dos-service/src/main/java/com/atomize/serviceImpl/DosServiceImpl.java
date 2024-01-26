@@ -1,20 +1,22 @@
 package com.atomize.serviceImpl;
 
 import com.atomize.dtos.Role;
+import com.atomize.dtos.SignInRequest;
 import com.atomize.dtos.SignUpRequest;
 import com.atomize.entity.Dos;
 import com.atomize.errors.ApiException.exception.ApiRequestException;
 import com.atomize.repository.DosRepository;
 import com.atomize.services.DOSService;
 import com.atomize.services.EmailService;
+import com.atomize.services.JwtService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 // dos service implementation
 @Service
@@ -23,7 +25,8 @@ import java.util.Optional;
 public class DosServiceImpl implements DOSService {
     private final DosRepository repository;
     private final PasswordEncoder passwordEncoder;
-    private final EmailService emailServive;
+    private final EmailService emailService;
+    private  final JwtService jwtService;
 
     @Override
     public Dos createDos(SignUpRequest signUpRequest) {
@@ -52,7 +55,7 @@ public class DosServiceImpl implements DOSService {
                 "Best regards,\n" +
                 "Jodos Company Group , here credentials you have created for your account " + signUpRequest;
 
-        emailServive.sendEmailToDos(signUpRequest.email(), subject, text);
+        emailService.sendEmailToDos(signUpRequest.email(), subject, text);
         return repository.save(dos);
     }
 
@@ -71,5 +74,24 @@ public class DosServiceImpl implements DOSService {
         repository.deleteByEmail(dosEmail);
 //         send email when they delete  account
         return dos;
+    }
+
+    @Override
+    public Dos loginDos(SignInRequest signInRequest) {
+        try {
+            Dos dos = repository.findByEmail(signInRequest.email()).orElseThrow(() -> {
+                throw new ApiRequestException("Invalid credentials", HttpStatus.BAD_REQUEST);
+            });
+            boolean passwordMatch = passwordEncoder.matches(signInRequest.password(), dos.getPassword());
+            if (!passwordMatch) throw new ApiRequestException("Invalid credentials", HttpStatus.BAD_REQUEST);
+            String token = jwtService.generateToken(dos);
+            log.info(token);
+            return dos;
+        } catch (ApiRequestException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new ApiRequestException("something went wrong please try again", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 }
