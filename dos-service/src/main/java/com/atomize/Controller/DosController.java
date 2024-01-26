@@ -1,6 +1,7 @@
 package com.atomize.Controller;
 
 
+import com.atomize.dtos.LoginResponse;
 import com.atomize.dtos.SignInRequest;
 import com.atomize.dtos.SignUpRequest;
 import com.atomize.entity.Dos;
@@ -39,7 +40,7 @@ public class DosController {
 
 //    login
     @PostMapping("/login")
-    public  ResponseEntity<?> loginDos(@RequestBody SignInRequest signInRequest){
+    public  ResponseEntity<LoginResponse> loginDos(@RequestBody SignInRequest signInRequest){
         return  ResponseEntity.ok().body(service.loginDos(signInRequest));
     }
 

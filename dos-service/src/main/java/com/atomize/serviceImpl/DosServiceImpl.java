@@ -1,5 +1,6 @@
 package com.atomize.serviceImpl;
 
+import com.atomize.dtos.LoginResponse;
 import com.atomize.dtos.Role;
 import com.atomize.dtos.SignInRequest;
 import com.atomize.dtos.SignUpRequest;
@@ -77,7 +78,7 @@ public class DosServiceImpl implements DOSService {
     }
 
     @Override
-    public Dos loginDos(SignInRequest signInRequest) {
+    public LoginResponse loginDos(SignInRequest signInRequest) {
         try {
             Dos dos = repository.findByEmail(signInRequest.email()).orElseThrow(() -> {
                 throw new ApiRequestException("Invalid credentials", HttpStatus.BAD_REQUEST);
@@ -86,7 +87,7 @@ public class DosServiceImpl implements DOSService {
             if (!passwordMatch) throw new ApiRequestException("Invalid credentials", HttpStatus.BAD_REQUEST);
             String token = jwtService.generateToken(dos);
             log.info(token);
-            return dos;
+            return  new   LoginResponse(dos,token);
         } catch (ApiRequestException e) {
             throw e;
         } catch (Exception e) {

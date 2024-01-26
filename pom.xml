@@ -16,6 +16,7 @@
 	<description>atomize school system</description>
 	<modules>
 		<module>dos-service</module>
+		<module>teacher-service</module>
 	</modules>
 	<properties>
 		<java.version>17</java.version>

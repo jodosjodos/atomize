@@ -1,6 +1,7 @@
 package com.atomize.services;
 
 
+import com.atomize.dtos.LoginResponse;
 import com.atomize.dtos.SignInRequest;
 import com.atomize.dtos.SignUpRequest;
 import com.atomize.entity.Dos;
@@ -17,7 +18,7 @@ public interface DOSService {
 
     Dos deleteDos(String dosEmail);
 
-    Dos loginDos(SignInRequest signInRequest);
+    LoginResponse loginDos(SignInRequest signInRequest);
 
 //    deleteDos();
 }
