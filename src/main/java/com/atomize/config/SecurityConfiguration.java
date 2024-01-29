@@ -30,7 +30,6 @@ public class SecurityConfiguration {
                 request.
                         requestMatchers("/api/dos/**").permitAll()
                 .requestMatchers("/api/teacher/login").permitAll()
-                        .requestMatchers("/api/teacher/create").permitAll()
                 .anyRequest().authenticated()
 
         ).sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).authenticationProvider(authenticationProvider()).addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
