@@ -9,6 +9,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,12 +30,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final UserServiceSecurity security;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
         final String userEmail;
         if (authHeader == null || authHeader.trim().isEmpty() || !authHeader.startsWith("Bearer")) {
-            filterChain.doFilter(request, response);
+//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+           filterChain.doFilter(request,response);
             return;
         }
         try {
@@ -45,12 +47,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 UserDetails dosDetails = security.userDetailsService().loadUserByUsername(userEmail);
                 if (service.isTokenValid(jwt, dosDetails)) {
                     SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
-                    UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(dosDetails, jwt, dosDetails.getAuthorities());
+                    UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(dosDetails, null, dosDetails.getAuthorities());
                     token.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     securityContext.setAuthentication(token);
                     SecurityContextHolder.setContext(securityContext);
                 }
             }
+            log.info("successfully");
             filterChain.doFilter(request, response);
         } catch (StringIndexOutOfBoundsException e) {
             JWtAuntenticationResponse response1 = new JWtAuntenticationResponse("please provide token in header", e.getMessage(), null, HttpServletResponse.SC_UNAUTHORIZED);

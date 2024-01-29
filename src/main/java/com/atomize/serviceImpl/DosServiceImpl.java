@@ -13,7 +13,9 @@ import com.atomize.services.JwtService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +29,8 @@ public class DosServiceImpl implements DOSService {
     private final DosRepository repository;
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
-    private  final JwtService jwtService;
+    private final JwtService jwtService;
+    private final AuthenticationManager authenticationManager;
 
     @Override
     public Dos createDos(SignUpRequest signUpRequest) {
@@ -80,16 +83,17 @@ public class DosServiceImpl implements DOSService {
     @Override
     public LoginResponse loginDos(SignInRequest signInRequest) {
         try {
-            Dos dos = repository.findByEmail(signInRequest.email()).orElseThrow(() -> {
-                throw new ApiRequestException("Invalid credentials", HttpStatus.BAD_REQUEST);
-            });
-            boolean passwordMatch = passwordEncoder.matches(signInRequest.password(), dos.getPassword());
-            if (!passwordMatch) throw new ApiRequestException("Invalid credentials", HttpStatus.BAD_REQUEST);
-            String token = jwtService.generateToken(dos);
-            log.info(token);
-            return  new   LoginResponse(dos,token);
+
+
+            Dos user = repository.findByEmail(signInRequest.email()).orElseThrow(() -> new ApiRequestException("Invalid email", HttpStatus.BAD_REQUEST));
+            if (passwordEncoder.matches(signInRequest.password(), user.getPassword())) {
+                String token = jwtService.generateToken(user);
+                return new LoginResponse(user, token);
+            }
+
+            throw new ApiRequestException("Invalid credentials", HttpStatus.BAD_REQUEST);
         } catch (ApiRequestException e) {
-            throw e;
+            throw new ApiRequestException("Invalid credentials", HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             throw new ApiRequestException("something went wrong please try again", HttpStatus.INTERNAL_SERVER_ERROR);
         }
