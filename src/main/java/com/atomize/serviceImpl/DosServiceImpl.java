@@ -86,10 +86,12 @@ public class DosServiceImpl implements DOSService {
 
 
             Dos user = repository.findByEmail(signInRequest.email()).orElseThrow(() -> new ApiRequestException("Invalid email", HttpStatus.BAD_REQUEST));
+
             if (passwordEncoder.matches(signInRequest.password(), user.getPassword())) {
                 String token = jwtService.generateToken(user);
                 return new LoginResponse(user, token);
             }
+
 
             throw new ApiRequestException("Invalid credentials", HttpStatus.BAD_REQUEST);
         } catch (ApiRequestException e) {
