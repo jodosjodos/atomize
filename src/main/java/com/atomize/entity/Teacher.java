@@ -8,8 +8,10 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import com.atomize.dto.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Table(name = "teacher")
 @Entity
@@ -19,8 +21,8 @@ import com.atomize.dto.Role;
 @RequiredArgsConstructor
 public class Teacher {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
     private String fullName;
     private String email;
     private String phoneNumber;
@@ -29,7 +31,10 @@ public class Teacher {
     private String degree;
     private Role role;
 
-
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinColumn(name = "dos_id")
+    @JsonIgnore
+    private Dos creatorDos;
     @OneToMany(mappedBy = "teacher")
     private List<Course> course;
     @OneToMany(mappedBy = "headTeacher")

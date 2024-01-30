@@ -6,7 +6,6 @@ import com.atomize.dto.SignUpRequest;
 import com.atomize.entity.Dos;
 import com.atomize.entity.Teacher;
 
-import java.util.ArrayList;
 import java.util.List;
 
 // dos service
@@ -19,7 +18,7 @@ public interface DOSService {
 
     LoginResponse<Dos> loginDos(SignInRequest signInRequest);
 
-    ArrayList<Teacher> getAllTeachers();
+    List<Teacher> getAllTeachers();
 
     // deleteDos();
 }

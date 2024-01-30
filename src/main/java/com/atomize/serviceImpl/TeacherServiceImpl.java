@@ -7,28 +7,36 @@ import com.atomize.dto.TeacherSignUpDto;
 import com.atomize.entity.Dos;
 import com.atomize.entity.Teacher;
 import com.atomize.errors.ApiException.exception.ApiRequestException;
+import com.atomize.repository.DosRepository;
 import com.atomize.repository.TeacherRepository;
 import com.atomize.services.EmailService;
 import com.atomize.services.TeacherService;
 
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class TeacherServiceImpl implements TeacherService {
     private final PasswordEncoder passwordEncoder;
     private final TeacherRepository repository;
     private final EmailService emailService;
+    private final DosRepository dosRepository;
 
     // sign up teacher
     @Override
+    @Transactional
     public Teacher createTeacher(TeacherSignUpDto signUpDto) {
         Teacher teacher = Teacher.builder()
                 .fullName(signUpDto.fullName())
@@ -50,7 +58,11 @@ public class TeacherServiceImpl implements TeacherService {
         // reaching out
         Dos loggedDos = (Dos) authentication.getPrincipal();
         // teacher.setCreatorDos(loggedDos);
-        ;
+
+        teacher.setCreatorDos(loggedDos);
+        List<Teacher> teachers = loggedDos.getTeachers();
+        teachers.add(teacher);
+        loggedDos.setTeachers(teachers);
 
         String subject = "Welcome to atomize best school management system! 🚀";
         String text = "Dear teacher " + signUpDto.fullName() + "\n\n" +
@@ -69,7 +81,12 @@ public class TeacherServiceImpl implements TeacherService {
                 "Jodos Company Group , here credentials you have created for your account " + signUpDto
                 + " you have created by dos : " + loggedDos.getName();
 
+        log.info("send email");
         emailService.sendEmailToDos(signUpDto.email(), subject, text);
+
+        log.info("save dos");
+        dosRepository.save(loggedDos);
+        log.info("save teacher");
         return repository.save(teacher);
         // return teacher;
     }

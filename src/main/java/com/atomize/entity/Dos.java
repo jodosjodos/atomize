@@ -13,6 +13,7 @@ import com.atomize.dto.Role;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 @Table(name = "Dos")
 @Entity
@@ -22,8 +23,8 @@ import java.util.List;
 @NoArgsConstructor
 public class Dos implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
     @Column(nullable = false)
     private String name;
     @Pattern(regexp = "\\+\\d{12}", message = "Invalid phone number")
@@ -41,6 +42,9 @@ public class Dos implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+    @Column(name = "teachers")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "creatorDos", cascade = CascadeType.ALL)
+    private List<Teacher> teachers;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

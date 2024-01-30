@@ -13,6 +13,7 @@ import com.atomize.services.DOSService;
 import com.atomize.services.EmailService;
 import com.atomize.services.JwtService;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -32,9 +33,9 @@ public class DosServiceImpl implements DOSService {
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
     private final JwtService jwtService;
-    private final TeacherRepository teacherRepository;
 
     @Override
+    @Transactional
     public Dos createDos(SignUpRequest signUpRequest) {
         Dos dos = Dos.builder()
                 .name(signUpRequest.name())
@@ -42,15 +43,19 @@ public class DosServiceImpl implements DOSService {
                 .email(signUpRequest.email())
                 .schoolName(signUpRequest.schoolName())
                 .password(passwordEncoder.encode(signUpRequest.password()))
-                .role(Role.ADMIN)
+                .role(Role.DOS)
                 .build();
+
+        List<Teacher> teachers = new ArrayList<Teacher>();
+
+        dos.setTeachers(teachers);
 
         boolean dosAlreadyExists = repository.findByEmail(dos.getEmail()).isPresent();
         boolean dosSchoolAlreadyExists = repository.findBySchoolName(dos.getSchoolName()).isPresent();
         if (dosAlreadyExists) {
             throw new ApiRequestException(" email already exists", HttpStatus.BAD_REQUEST);
         }
-        if (dosSchoolAlreadyExists){
+        if (dosSchoolAlreadyExists) {
             throw new ApiRequestException(" school dos have been already registered", HttpStatus.BAD_REQUEST);
 
         }
@@ -114,7 +119,7 @@ public class DosServiceImpl implements DOSService {
     }
 
     @Override
-    public ArrayList<Teacher> getAllTeachers() {
+    public List<Teacher> getAllTeachers() {
 
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
