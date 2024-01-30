@@ -40,7 +40,7 @@ public class DosController {
 
 //    login
     @PostMapping("/login")
-    public  ResponseEntity<LoginResponse> loginDos(@RequestBody SignInRequest signInRequest){
+    public  ResponseEntity<LoginResponse<Dos>> loginDos(@RequestBody SignInRequest signInRequest){
         return  ResponseEntity.ok().body(service.loginDos(signInRequest));
     }
 

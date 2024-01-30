@@ -1,5 +1,6 @@
 package com.atomize.Controller;
 
+import com.atomize.dto.LoginResponse;
 import com.atomize.dto.TeacherLoginDto;
 import com.atomize.dto.TeacherSignUpDto;
 import com.atomize.entity.Teacher;
@@ -34,7 +35,8 @@ public class TeacherController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?>login (@RequestBody @Valid TeacherLoginDto loginDto, BindingResult bindingResult) {
+    public ResponseEntity<LoginResponse<Teacher>> login(@RequestBody @Valid TeacherLoginDto loginDto,
+            BindingResult bindingResult) {
         return ResponseEntity.ok().body(service.login(loginDto));
     }
 
