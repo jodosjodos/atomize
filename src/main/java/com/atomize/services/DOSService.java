@@ -1,11 +1,9 @@
 package com.atomize.services;
 
-
-import com.atomize.dtos.LoginResponse;
-import com.atomize.dtos.SignInRequest;
-import com.atomize.dtos.SignUpRequest;
+import com.atomize.dto.LoginResponse;
+import com.atomize.dto.SignInRequest;
+import com.atomize.dto.SignUpRequest;
 import com.atomize.entity.Dos;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -17,7 +15,7 @@ public interface DOSService {
 
     Dos deleteDos(String dosEmail);
 
-    LoginResponse loginDos(SignInRequest signInRequest);
+    LoginResponse<Dos> loginDos(SignInRequest signInRequest);
 
-//    deleteDos();
+    // deleteDos();
 }

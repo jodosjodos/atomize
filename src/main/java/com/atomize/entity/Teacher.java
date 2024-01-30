@@ -1,6 +1,5 @@
 package com.atomize.entity;
 
-import com.atomize.dtos.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Date;
 import java.util.List;
+
+import com.atomize.dto.Role;
 
 @Table(name = "teacher")
 @Entity
@@ -20,18 +21,21 @@ public class Teacher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private  String fullName;
-    private  String email;
-    private  String phoneNumber;
-    private  String password;
-    private  Date dateOfBirth;
-    private  String degree;
+    private String fullName;
+    private String email;
+    private String phoneNumber;
+    private String password;
+    private Date dateOfBirth;
+    private String degree;
     private Role role;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "dos_id")
+    private Dos creatorDos;
     @OneToMany(mappedBy = "teacher")
-    private  List<Course> course;
+    private List<Course> course;
     @OneToMany(mappedBy = "headTeacher")
-    private  List<ClassRoom> classRoom;
+    private List<ClassRoom> classRoom;
     @OneToMany(mappedBy = "headTeacher")
-    private    List<Student> student;
+    private List<Student> student;
 
 }

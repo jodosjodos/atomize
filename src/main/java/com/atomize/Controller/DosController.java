@@ -1,9 +1,9 @@
 package com.atomize.Controller;
 
 
-import com.atomize.dtos.LoginResponse;
-import com.atomize.dtos.SignInRequest;
-import com.atomize.dtos.SignUpRequest;
+import com.atomize.dto.LoginResponse;
+import com.atomize.dto.SignInRequest;
+import com.atomize.dto.SignUpRequest;
 import com.atomize.entity.Dos;
 import com.atomize.services.DOSService;
 import jakarta.validation.Valid;

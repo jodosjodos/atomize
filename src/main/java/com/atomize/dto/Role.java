@@ -1,4 +1,4 @@
-package com.atomize.dtos;
+package com.atomize.dto;
 
 public enum Role {
     USER,

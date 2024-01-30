@@ -1,4 +1,4 @@
-package com.atomize.dtos;
+package com.atomize.dto;
 
 import java.util.Date;
 
@@ -8,7 +8,6 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
 
 public record TeacherSignUpDto (
     @Valid

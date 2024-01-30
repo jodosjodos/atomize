@@ -1,6 +1,8 @@
 package com.atomize.Controller;
 
-import com.atomize.dtos.TeacherSignUpDto;
+import com.atomize.dto.TeacherLoginDto;
+import com.atomize.dto.TeacherSignUpDto;
+import com.atomize.entity.Teacher;
 import com.atomize.services.TeacherService;
 
 import jakarta.validation.ConstraintViolationException;
@@ -25,15 +27,15 @@ public class TeacherController {
     private final TeacherService service;
 
     @PostMapping("/create")
-    public ResponseEntity<?> create(@RequestBody @Valid TeacherSignUpDto signUpDto, BindingResult bindingResult) {
+    public ResponseEntity<Teacher> create(@RequestBody @Valid TeacherSignUpDto signUpDto, BindingResult bindingResult) {
 
         return ResponseEntity.ok().body(service.createTeacher(signUpDto));
 
     }
 
-    @GetMapping("/login")
-    public ResponseEntity<?> test() {
-        return ResponseEntity.ok().body("reaching out");
+    @PostMapping("/login")
+    public ResponseEntity<?>login (@RequestBody @Valid TeacherLoginDto loginDto, BindingResult bindingResult) {
+        return ResponseEntity.ok().body(service.login(loginDto));
     }
 
     // handle validation of inputs

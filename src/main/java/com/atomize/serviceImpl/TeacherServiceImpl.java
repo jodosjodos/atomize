@@ -1,13 +1,17 @@
 package com.atomize.serviceImpl;
 
-import com.atomize.dtos.Role;
-import com.atomize.dtos.TeacherSignUpDto;
+import com.atomize.dto.LoginResponse;
+import com.atomize.dto.Role;
+import com.atomize.dto.TeacherLoginDto;
+import com.atomize.dto.TeacherSignUpDto;
 import com.atomize.entity.Dos;
 import com.atomize.entity.Teacher;
 import com.atomize.errors.ApiException.exception.ApiRequestException;
 import com.atomize.repository.TeacherRepository;
 import com.atomize.services.EmailService;
 import com.atomize.services.TeacherService;
+
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -23,6 +27,7 @@ public class TeacherServiceImpl implements TeacherService {
     private final TeacherRepository repository;
     private final EmailService emailService;
 
+    // sign up teacher
     @Override
     public Teacher createTeacher(TeacherSignUpDto signUpDto) {
         Teacher teacher = Teacher.builder()
@@ -44,6 +49,7 @@ public class TeacherServiceImpl implements TeacherService {
         Authentication authentication = securityContext.getAuthentication();
         // reaching out
         Dos loggedDos = (Dos) authentication.getPrincipal();
+        teacher.setCreatorDos(loggedDos);
         System.out.println(loggedDos.getName());
         ;
 
@@ -67,6 +73,27 @@ public class TeacherServiceImpl implements TeacherService {
         emailService.sendEmailToDos(signUpDto.email(), subject, text);
         return repository.save(teacher);
         // return teacher;
+    }
+
+
+    // login teacher
+    @Override
+    public LoginResponse<Teacher> login(@Valid TeacherLoginDto loginDto) {
+        try {
+
+            Teacher user = repository.findByEmail(loginDto.email())
+                    .orElseThrow(() -> new ApiRequestException("Invalid email", HttpStatus.BAD_REQUEST));
+
+            if (passwordEncoder.matches(loginDto.password(), user.getPassword())) {
+                return new LoginResponse<Teacher>(user, null);
+            }
+
+            throw new ApiRequestException("Invalid credentials", HttpStatus.BAD_REQUEST);
+        } catch (ApiRequestException e) {
+            throw new ApiRequestException("Invalid credentials", HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            throw new ApiRequestException("something went wrong please try again", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }
