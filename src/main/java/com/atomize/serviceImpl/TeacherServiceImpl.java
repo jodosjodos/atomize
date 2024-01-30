@@ -49,7 +49,7 @@ public class TeacherServiceImpl implements TeacherService {
         Authentication authentication = securityContext.getAuthentication();
         // reaching out
         Dos loggedDos = (Dos) authentication.getPrincipal();
-        teacher.setCreatorDos(loggedDos);
+        // teacher.setCreatorDos(loggedDos);
         ;
 
         String subject = "Welcome to atomize best school management system! 🚀";

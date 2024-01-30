@@ -28,9 +28,8 @@ public class Teacher {
     private Date dateOfBirth;
     private String degree;
     private Role role;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "dosId", referencedColumnName = "id")
-    private Dos creatorDos;
+
+
     @OneToMany(mappedBy = "teacher")
     private List<Course> course;
     @OneToMany(mappedBy = "headTeacher")

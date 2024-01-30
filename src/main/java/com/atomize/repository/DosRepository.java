@@ -11,6 +11,8 @@ import java.util.Optional;
 public interface DosRepository extends JpaRepository<Dos, Long> {
     Optional<Dos> findByEmail(String email);
 
+    Optional<Dos> findBySchoolName(String schoolName);
+
     @Transactional
     void deleteByEmail(String dosEmail);
 }

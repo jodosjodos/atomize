@@ -46,8 +46,13 @@ public class DosServiceImpl implements DOSService {
                 .build();
 
         boolean dosAlreadyExists = repository.findByEmail(dos.getEmail()).isPresent();
+        boolean dosSchoolAlreadyExists = repository.findBySchoolName(dos.getSchoolName()).isPresent();
         if (dosAlreadyExists) {
             throw new ApiRequestException(" email already exists", HttpStatus.BAD_REQUEST);
+        }
+        if (dosSchoolAlreadyExists){
+            throw new ApiRequestException(" school dos have been already registered", HttpStatus.BAD_REQUEST);
+
         }
         String subject = "Welcome to atomize best school management system! 🚀";
         String text = "Dear " + signUpRequest.name() + "\n\n" +
