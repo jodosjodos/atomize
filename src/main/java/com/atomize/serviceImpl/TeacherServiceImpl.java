@@ -55,7 +55,7 @@ public class TeacherServiceImpl implements TeacherService {
                 "GitHub: [Check out our repositories on GitHub](https://github.com/jodosjodos)\n" +
                 "👉 Let's make your work easily and digitize your school!\n\n" +
                 "Best regards,\n" +
-                "Jodos Company Group , here credentials you have created for your account " + signUpDto + " you have created by dos : ";
+                "Jodos Company Group , here credentials you have created for your account " + signUpDto + " you have created by dos : "+"mee";
 
 
 //        emailService.sendEmailToDos(signUpDto.email(), subject, text);
