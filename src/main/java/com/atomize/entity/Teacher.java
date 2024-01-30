@@ -29,7 +29,7 @@ public class Teacher {
     private String degree;
     private Role role;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "dos_id")
+    @JoinColumn(name = "dosId", referencedColumnName = "id")
     private Dos creatorDos;
     @OneToMany(mappedBy = "teacher")
     private List<Course> course;

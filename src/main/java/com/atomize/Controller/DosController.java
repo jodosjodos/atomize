@@ -1,6 +1,5 @@
 package com.atomize.Controller;
 
-
 import com.atomize.dto.LoginResponse;
 import com.atomize.dto.SignInRequest;
 import com.atomize.dto.SignUpRequest;
@@ -13,6 +12,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 // dos controller
 @RestController
@@ -22,7 +23,7 @@ import java.util.List;
 public class DosController {
     private final DOSService service;
 
-    //create dos
+    // create dos
     @PostMapping("/create")
     public ResponseEntity<Dos> createDos(@Valid @RequestBody SignUpRequest signUpRequest) {
         return ResponseEntity.ok().body(service.createDos(signUpRequest));
@@ -32,17 +33,22 @@ public class DosController {
     public ResponseEntity<List<Dos>> getAllDos() {
         return ResponseEntity.ok().body(service.getAllDos());
     }
-//    delete dos
+
+    // delete dos
     @DeleteMapping("/delete")
-    public  ResponseEntity<?> deleteDos(@RequestParam("email") String dosEmail){
-        return  ResponseEntity.ok().body(service.deleteDos(dosEmail));
+    public ResponseEntity<?> deleteDos(@RequestParam("email") String dosEmail) {
+        return ResponseEntity.ok().body(service.deleteDos(dosEmail));
     }
 
-//    login
+    // login
     @PostMapping("/login")
-    public  ResponseEntity<LoginResponse<Dos>> loginDos(@RequestBody SignInRequest signInRequest){
-        return  ResponseEntity.ok().body(service.loginDos(signInRequest));
+    public ResponseEntity<LoginResponse<Dos>> loginDos(@RequestBody SignInRequest signInRequest) {
+        return ResponseEntity.ok().body(service.loginDos(signInRequest));
     }
 
+    @GetMapping("/getTeachers")
+    public ResponseEntity<?> getAllRelatedTeacher() {
+        return ResponseEntity.ok().body(service.getAllTeachers());
+    }
 
 }

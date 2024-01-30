@@ -50,7 +50,6 @@ public class TeacherServiceImpl implements TeacherService {
         // reaching out
         Dos loggedDos = (Dos) authentication.getPrincipal();
         teacher.setCreatorDos(loggedDos);
-        System.out.println(loggedDos.getName());
         ;
 
         String subject = "Welcome to atomize best school management system! 🚀";
@@ -74,7 +73,6 @@ public class TeacherServiceImpl implements TeacherService {
         return repository.save(teacher);
         // return teacher;
     }
-
 
     // login teacher
     @Override

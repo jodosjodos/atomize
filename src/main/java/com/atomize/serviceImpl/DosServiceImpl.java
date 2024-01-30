@@ -5,16 +5,23 @@ import com.atomize.dto.Role;
 import com.atomize.dto.SignInRequest;
 import com.atomize.dto.SignUpRequest;
 import com.atomize.entity.Dos;
+import com.atomize.entity.Teacher;
 import com.atomize.errors.ApiException.exception.ApiRequestException;
 import com.atomize.repository.DosRepository;
+import com.atomize.repository.TeacherRepository;
 import com.atomize.services.DOSService;
 import com.atomize.services.EmailService;
 import com.atomize.services.JwtService;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 // dos service implementation
@@ -25,6 +32,7 @@ public class DosServiceImpl implements DOSService {
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
     private final JwtService jwtService;
+    private final TeacherRepository teacherRepository;
 
     @Override
     public Dos createDos(SignUpRequest signUpRequest) {
@@ -97,6 +105,23 @@ public class DosServiceImpl implements DOSService {
         } catch (Exception e) {
             throw new ApiRequestException("something went wrong please try again", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
+    }
+
+    @Override
+    public ArrayList<Teacher> getAllTeachers() {
+
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+        // reaching out
+        Dos loggedDos = (Dos) authentication.getPrincipal();
+        // ArrayList<Teacher> teachers =
+        // teacherRepository.findByDos_Id(loggedDos.getId());
+        ArrayList<Teacher> teachers = new ArrayList<>();
+        if (teachers.size() == 0) {
+            throw new ApiRequestException("this dos haven't created any teacher", HttpStatus.NOT_FOUND);
+        }
+        return teachers;
 
     }
 }
