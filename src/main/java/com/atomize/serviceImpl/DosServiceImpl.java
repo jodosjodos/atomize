@@ -33,6 +33,7 @@ public class DosServiceImpl implements DOSService {
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
     private final JwtService jwtService;
+    private final TeacherRepository teacherRepository;
 
     @Override
     @Transactional
@@ -125,9 +126,7 @@ public class DosServiceImpl implements DOSService {
         Authentication authentication = securityContext.getAuthentication();
         // reaching out
         Dos loggedDos = (Dos) authentication.getPrincipal();
-        // ArrayList<Teacher> teachers =
-        // teacherRepository.findByDos_Id(loggedDos.getId());
-        ArrayList<Teacher> teachers = new ArrayList<>();
+        List<Teacher> teachers = teacherRepository.findByCreatorDos(loggedDos);
         if (teachers.size() == 0) {
             throw new ApiRequestException("this dos haven't created any teacher", HttpStatus.NOT_FOUND);
         }
