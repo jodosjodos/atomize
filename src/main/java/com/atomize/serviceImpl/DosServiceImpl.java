@@ -11,11 +11,7 @@ import com.atomize.services.DOSService;
 import com.atomize.services.EmailService;
 import com.atomize.services.JwtService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,13 +20,11 @@ import java.util.List;
 // dos service implementation
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class DosServiceImpl implements DOSService {
     private final DosRepository repository;
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
     private final JwtService jwtService;
-    private final AuthenticationManager authenticationManager;
 
     @Override
     public Dos createDos(SignUpRequest signUpRequest) {

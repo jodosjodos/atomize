@@ -1,7 +1,6 @@
 package com.atomize.Controller;
 
 import com.atomize.dtos.TeacherSignUpDto;
-import com.atomize.errors.ApiException.exception.ApiRequestException;
 import com.atomize.services.TeacherService;
 
 import jakarta.validation.ConstraintViolationException;
