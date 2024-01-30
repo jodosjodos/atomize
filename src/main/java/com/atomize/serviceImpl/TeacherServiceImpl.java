@@ -26,13 +26,13 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public Teacher createTeacher(TeacherSignUpDto signUpDto) {
         Teacher teacher = Teacher.builder()
-                .fullName(signUpDto.getFullName())
-                .phoneNumber(signUpDto.getPhoneNumber())
-                .degree(signUpDto.getDegree())
-                .email(signUpDto.getEmail())
-                .password(passwordEncoder.encode(signUpDto.getPassword()))
+                .fullName(signUpDto.fullName())
+                .phoneNumber(signUpDto.phoneNumber())
+                .degree(signUpDto.degree())
+                .email(signUpDto.email())
+                .password(passwordEncoder.encode(signUpDto.password()))
                 .role(Role.TEACHER)
-                .dateOfBirth(signUpDto.getDateOfBirth())
+                .dateOfBirth(signUpDto.dateOfBirth())
 
                 .build();
 
@@ -48,7 +48,7 @@ public class TeacherServiceImpl implements TeacherService {
         ;
 
         String subject = "Welcome to atomize best school management system! 🚀";
-        String text = "Dear teacher " + signUpDto.getFullName() + "\n\n" +
+        String text = "Dear teacher " + signUpDto.fullName() + "\n\n" +
                 "🌟 Congratulations on joining  atomize community! We are delighted to have you on board, and we can't wait to see   your school  starting using our system\n\n"
                 +
                 "🚀 Your journey starts now. Explore the limitless potential of atomize by visiting its official online website ( will  be provided later).\n\n"
@@ -64,7 +64,7 @@ public class TeacherServiceImpl implements TeacherService {
                 "Jodos Company Group , here credentials you have created for your account " + signUpDto
                 + " you have created by dos : " + loggedDos.getName();
 
-        emailService.sendEmailToDos(signUpDto.getEmail(), subject, text);
+        emailService.sendEmailToDos(signUpDto.email(), subject, text);
         return repository.save(teacher);
         // return teacher;
     }

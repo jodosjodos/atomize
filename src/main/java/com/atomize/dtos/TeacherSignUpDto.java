@@ -10,21 +10,20 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
-@Data
-public class TeacherSignUpDto {
+public record TeacherSignUpDto (
     @Valid
     @NotNull(message = "full name is required")
 
-    String fullName;
+    String fullName,
     @Email(message = "please provided valid email")
-    String email;
+    String email,
     @Size(min = 4, max = 15, message = " please provide valid phoneNumber")
-    String phoneNumber;
+    String phoneNumber,
     @Size(min = 4, message = "please provide strong password")
-    String password;
+    String password,
     @NotNull(message = "degree is required")
-    String degree;
-    Course course;
+    String degree,
+    Course course,
     @NotNull
-    Date dateOfBirth;
-}
+    Date dateOfBirth
+){}
