@@ -5,7 +5,7 @@ import lombok.Data;
 import org.springframework.http.HttpStatus;
 
 @Data
-public class JWtAuntenticationResponse {
+public class JWtAuthenticationResponse {
     @JsonProperty("message")
     private final String message;
     @JsonProperty("error-message")

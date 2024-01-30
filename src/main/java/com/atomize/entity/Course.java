@@ -16,10 +16,11 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String name;
     @OneToMany
     private    List<Student> student;
-    @OneToMany
-    private    List<Teacher> teacher;
+    @ManyToOne()
+    private     Teacher teacher;
     @OneToMany
     private    List<ClassRoom> classRoom;
 }

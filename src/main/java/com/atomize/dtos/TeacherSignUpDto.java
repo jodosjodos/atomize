@@ -2,10 +2,29 @@ package com.atomize.dtos;
 
 import java.util.Date;
 
-public record TeacherSignUpDto(String fullName,
-                               String email,
-                               String phoneNumber,
-                               String password,
-                               String degree,
-                               Date dateOfBirth) {
+import com.atomize.entity.Course;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
+
+@Data
+public class TeacherSignUpDto {
+    @Valid
+    @NotNull(message = "full name is required")
+
+    String fullName;
+    @Email(message = "please provided valid email")
+    String email;
+    @Size(min = 4, max = 15, message = " please provide valid phoneNumber")
+    String phoneNumber;
+    @Size(min = 4, message = "please provide strong password")
+    String password;
+    @NotNull(message = "degree is required")
+    String degree;
+    Course course;
+    @NotNull
+    Date dateOfBirth;
 }
