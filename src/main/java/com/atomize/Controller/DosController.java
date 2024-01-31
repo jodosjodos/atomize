@@ -46,6 +46,7 @@ public class DosController {
         return ResponseEntity.ok().body(service.loginDos(signInRequest));
     }
 
+    // get all related teacher
     @GetMapping("/teachers")
     public ResponseEntity<?> getAllRelatedTeacher() {
         return ResponseEntity.ok().body(service.getAllTeachers());
