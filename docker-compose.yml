@@ -1,0 +1,28 @@
+services:
+  postgres:
+    container_name: post-v3
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: atomize
+    ports:
+      - "5431:5432"
+    volumes:
+      - postgres:/var/lib/postgres/data
+    networks:
+      - spring-boot-network
+  spring-boot-app:
+    container_name: atomize
+    image: spring/atomize
+    ports:
+      - "8085:8085"
+    networks:
+      - spring-boot-network
+    depends_on:
+     - postgres
+volumes:
+  postgres:
+networks:
+  spring-boot-network:
+    driver: bridge
